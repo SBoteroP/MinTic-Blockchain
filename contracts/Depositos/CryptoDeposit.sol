@@ -31,4 +31,19 @@ contract CryptoDeposit {
     function getSaldo(bytes10 moneda) external view returns (uint256) {
         return cuentas[msg.sender][moneda].saldo;
     }
+
+    // permite a los usuarios retirar una cantidad específica de alguna criptomoneda
+    function retirar(uint256 cantidad, bytes10 moneda) external {
+        Cuenta storage cuenta = cuentas[msg.sender][moneda];
+        require(cuenta.saldo >= cantidad, "Saldo insuficiente");
+
+        cuenta.saldo -= cantidad; // cuenta.saldo = cuenta.saldo - cantidad
+
+        bool success = payable(msg.sender).send(cantidad);
+        require(success, "Fallo en la transferencia");
+
+        if (cuenta.saldo == 0) {
+            delete cuentas[msg.sender][moneda];
+        }
+    }
 }

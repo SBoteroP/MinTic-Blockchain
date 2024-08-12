@@ -14,10 +14,10 @@ contract CryptoDeposit {
     // se utiliza un mapeo bidimensional para almacenar las cuentas de los usuarios
     mapping(address => mapping(bytes10 => Cuenta)) cuentas;
 
-    uint256 public tiempoFinBloqueo;
-    bool public bloqueoPermanente;
+    uint256 private tiempoFinBloqueo;
+    bool private bloqueoPermanente;
 
-    address public owner;
+    address private owner;
 
     constructor() {
         owner = msg.sender;
